@@ -3,11 +3,34 @@
 import scipy.stats
 import numpy as np
 
+def wf_transform(wf_int, wf_mz, spec):
+    #This function performs a weight factor transformation to a spectrum
+    
+    #input:
+    #wf_int: float
+    #wf_mz: float
+    #spec: nx2 np array with first column being mass/charge and second column being intensity
+
+    #output:
+    #weight factor transformed spectrum
+
+    spec[:,1] = np.power(spec[:,0], wf_mz) * np.power(spec[:,1], wf_int)
+    return(spec)
+
+
 def transform_int(intensity, thresh):
     #This transformation was presented by: 
     #Li, Y.; Kind, T.; Folz, J.; Vaniya, A.; Mehta, S. S.; Fiehn, O.
     #Spectral entropy outperforms MS/MS dot product similarity for small-molecule compound identification. 
     #Nature Methods 2021, 18, 1524–1531
+    
+    #input:
+    #intensity: 1d np array
+    #thresh: nonnegative float
+    
+    #output:
+    #1d np array of transformed intensities
+
     S = scipy.stats.entropy(intensity)
     if S < thresh:
         w = (1 + S) / (1 + thresh) 
@@ -32,6 +55,13 @@ def clean_spectrum(spectrum, noise_removal, da):
     #2) removes peaks that have intensity lower than max(intensity)*noise_removal
     #3) normalizes the centroided and noise_removaled spectrum
 
+    #input:
+    #spectrum: nx2 np array with first column being mass/charge and second column being intensity
+    #noise_removal and da parameters described above
+
+    #output:
+    #centroided, noise-removed, and normalized spectrum
+
     #Centroid peaks
     spectrum = spectrum[np.argsort(spectrum[:, 0])]
     spectrum = centroid_spec(spectrum, da=da)
@@ -51,6 +81,13 @@ def centroid_spec(spec, da):
     #Li, Y.; Kind, T.; Folz, J.; Vaniya, A.; Mehta, S. S.; Fiehn, O.
     #Spectral entropy outperforms MS/MS dot product similarity for small-molecule compound identification. 
     #Nature Methods 2021, 18, 1524–1531
+
+    #input:
+    #spectrum: nx2 np array with first column being mass/charge and second column being intensity
+    #da: window-size parameter
+
+    #output:
+    #centroided spectrum
 
     #Fast check is the spectrum needs centroiding
     mz_array = spec[:, 0]
@@ -100,6 +137,7 @@ def centroid_spec(spec, da):
         return spec
 
 
+
 def match_peaks_in_spectra(spec_a, spec_b, da):
     #This function was presented by: 
     #Li, Y.; Kind, T.; Folz, J.; Vaniya, A.; Mehta, S. S.; Fiehn, O.
@@ -108,6 +146,14 @@ def match_peaks_in_spectra(spec_a, spec_b, da):
 
     #This function matches two spectra to find common peaks in order
     #to obtain two lists of intensities of the same length
+
+    #input:
+    #spec_a: nx2 np array with first column being mass/charge and second column being intensity
+    #spec_b: mx2 np array with first column being mass/charge and second column being intensity
+    #da: window-size parameter
+
+    #output:
+    #kx3 np array with first column being mass/charge, second column being matched intensities of spec_a, and third column being matched intensities of spec_b
 
     a = 0
     b = 0
@@ -148,17 +194,6 @@ def match_peaks_in_spectra(spec_a, spec_b, da):
     else:
         spec_merged = np.array([[0., 0., 0.]], dtype=np.float64)
     return spec_merged
-
-
-tmp = np.array([[10,10.01,12,15], [100,50,200,150]])
-tmp1 = np.transpose(tmp)
-tmp = np.array([[9.98,12.04,13,16], [150,100,250,100]])
-tmp2 = np.transpose(tmp)
-
-tmp = match_peaks_in_spectra(tmp1, tmp2, 0.05)
-tmp[:,1] = normalize(tmp[:,1])
-tmp[:,2] = normalize(tmp[:,2])
-print(tmp)
 
 
 

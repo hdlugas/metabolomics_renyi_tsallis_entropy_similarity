@@ -1,12 +1,14 @@
 ##### Similarity Score Functions #####
+# Note that the input for all similarity measures are two 1-d arrays of the same length. 
+# These 1-d arrays must be normalized to sum to 1 for the Renyi and Tsallis Entropy Similarity Measures.
 
 import scipy.stats
 import numpy as np
 
 
-def S_cos(X, Y):
+def S_cos(ints_a, ints_b):
     #Cosine Similarity Measure
-    return np.dot(X,Y) / (np.sqrt(sum(np.power(X,2))) * np.sqrt(sum(np.power(Y,2))))
+    return np.dot(ints_a,ints_b) / (np.sqrt(sum(np.power(ints_a,2))) * np.sqrt(sum(np.power(ints_b,2))))
 
 def S_shannon(ints_a, ints_b):
     #Shannon Entropy Similarity Measure

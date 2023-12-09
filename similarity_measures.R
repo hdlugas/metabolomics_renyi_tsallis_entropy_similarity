@@ -1,4 +1,6 @@
 ##### Similarity Score Functions #####
+# Note that the input for all similarity measures are two 1-d arrays of the same length. 
+# These 1-d arrays must be normalized to sum to 1 for the Renyi and Tsallis Entropy Similarity Measures.
 
 
 #Cosine Similarity Measure
