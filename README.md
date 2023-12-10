@@ -1,4 +1,4 @@
-# Metabolomics: Compound Identification via Spectral Library Matching with Novel Entropy Similarity Measures
+# Metabolomics: Compound Identification via Spectral Library Matching with Novel Renyi and Tsallis Entropy Similarity Measures
 
 We have constructed two novel similarity measures based on Renyi and Tsallis Entropy to quantify the similarity between two probability distributions. Our original motivation for constructing these similarity measures is to improve compound identification via spectral library matching with respect to either liquid-chromatography mass spectrometry (LCMS) or gas-chromatography mass spectrometry (GCMS) data. These similarity measures were constructed by generalizing the Shannon Entropy Similarity Measure presented by Li et. al. in the publication referenced below.
 
